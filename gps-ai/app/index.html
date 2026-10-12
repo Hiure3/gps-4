@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.open-meteo.com https://router.project-osrm.org">
+  <title>GPS AI</title>
+  <style>
+    :root {
+      --asfalto: #1e2428;
+      --placa: #0b5d46;
+      --faixa: #f2c230;
+      --papel: #f4f5f3;
+      --borda: #cfd5d1;
+      --erro: #a3271f;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; background: var(--papel); color: var(--asfalto); line-height: 1.5; }
+    header { background: var(--placa); color: #fff; padding: 20px 28px; border-bottom: 6px solid var(--faixa); }
+    header h1 { margin: 0; font-size: 1.6rem; }
+    header p { margin: 4px 0 0; opacity: .9; }
+    main { max-width: 860px; margin: 0 auto; padding: 24px 20px 48px; display: grid; gap: 20px; }
+    section { background: #fff; border: 1px solid var(--borda); border-radius: 6px; padding: 18px 20px; }
+    h2 { margin: 0 0 12px; font-size: 1.1rem; color: var(--placa); }
+    label { display: block; font-size: .9rem; margin: 10px 0 4px; }
+    input { width: 100%; padding: 8px 10px; font: inherit; border: 1px solid var(--borda); border-radius: 4px; }
+    .linha { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    button { font: inherit; font-weight: 600; padding: 8px 16px; border: 0; border-radius: 4px; background: var(--placa); color: #fff; cursor: pointer; }
+    button.sec { background: #fff; color: var(--placa); border: 1px solid var(--placa); }
+    button:focus-visible, input:focus-visible { outline: 3px solid var(--faixa); outline-offset: 2px; }
+    .saida { margin-top: 12px; min-height: 1.5em; white-space: pre-wrap; }
+    .erro { color: var(--erro); font-weight: 600; }
+    ol { padding-left: 22px; margin: 8px 0 0; }
+    .aviso { font-size: .85rem; color: #4b5651; margin-top: 10px; }
+    #log { max-height: 160px; overflow: auto; border-top: 1px solid var(--borda); margin-top: 12px; padding-top: 8px; font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GPS AI</h1>
+    <p>Navegação com avisos de voz em português</p>
+  </header>
+  <main>
+    <section aria-labelledby="t-clima">
+      <h2 id="t-clima">Clima</h2>
+      <label for="clima-pos">Local (latitude, longitude)</label>
+      <input id="clima-pos" value="-5.7945, -35.2110">
+      <div class="linha"><button id="btn-clima">Ver clima</button></div>
+      <div id="clima-saida" class="saida" aria-live="polite"></div>
+    </section>
+
+    <section aria-labelledby="t-cmd">
+      <h2 id="t-cmd">Comando de voz (digitado)</h2>
+      <label for="cmd">Escreva um comando, por exemplo: leve-me para casa</label>
+      <input id="cmd" placeholder="Qual é a previsão do tempo?">
+      <div class="linha"><button id="btn-cmd">Entender comando</button></div>
+      <div id="cmd-saida" class="saida" aria-live="polite"></div>
+    </section>
+
+    <section aria-labelledby="t-rota">
+      <h2 id="t-rota">Rota</h2>
+      <label for="origem">Origem (latitude, longitude)</label>
+      <input id="origem" value="-5.8800, -35.1760">
+      <label for="destino">Destino (latitude, longitude)</label>
+      <input id="destino" value="-5.7945, -35.2110">
+      <div class="linha">
+        <button id="btn-rota">Calcular rota</button>
+        <button id="btn-falar" class="sec">Falar instruções</button>
+        <button id="btn-sim" class="sec">Simular viagem</button>
+        <button id="btn-parar" class="sec">Parar</button>
+      </div>
+      <div id="rota-saida" class="saida" aria-live="polite"></div>
+      <div id="sim-status" class="saida"></div>
+      <div id="log" aria-live="polite"></div>
+      <p class="aviso">As rotas vêm do servidor de demonstração do OSRM, sem trânsito em tempo real. A viagem é simulada: o app ainda não lê o GPS do computador.</p>
+    </section>
+  </main>
+  <script src="bundle.js"></script>
+</body>
+</html>

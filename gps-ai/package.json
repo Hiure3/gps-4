@@ -1,0 +1,37 @@
+{
+  "name": "gps-ai",
+  "version": "0.2.0",
+  "description": "GPS AI - Navegação inteligente",
+  "author": "GPS AI",
+  "main": "electron/main.cjs",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm run test",
+    "build:ui": "esbuild src/app/main.ts --bundle --outfile=app/bundle.js --format=iife --target=chrome130",
+    "start": "npm run build:ui && electron .",
+    "dist": "npm run build:ui && electron-builder --win --x64 --publish never"
+  },
+  "build": {
+    "appId": "br.com.gpsai.app",
+    "productName": "GPS AI",
+    "directories": { "output": "release" },
+    "files": ["electron/**", "app/**"],
+    "win": { "target": "nsis" },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "GPS-AI-Setup-${version}.${ext}"
+    }
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8",
+    "esbuild": "0.24.0",
+    "typescript": "5.6.3",
+    "vitest": "2.1.8"
+  }
+}
